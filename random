@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Kousha Talebian <kousha.talebian@gmail.com>
+# Generates a random string
+# Default length is 32; use random XX for other lengths
+
+for i in `seq 1 ${2:-1}`;
+do
+      cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
+done
