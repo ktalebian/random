@@ -4,7 +4,33 @@
 # Generates a random string
 # Default length is 32; use random XX for other lengths
 
-for i in `seq 1 ${2:-1}`;
-do
-      cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
-done
+random_str() {
+	for i in `seq 1 ${2:-1}`;
+	do
+      		cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
+	done
+}
+
+random_hex() {
+	for i in `seq 1 ${2:-1}`;
+        do
+		hexdump -n $((${1:-32}/2)) -e '4/4 "%08X" 1 "\n"' /dev/random
+        done
+}
+
+if [ "$1" = "hex" ]; then
+	random_hex $1
+	exit 0
+fi
+
+if [ "$2" = "hex" ]; then
+	random_hex $1
+	exit 0
+fi
+
+if [ "$3" = "hex" ]; then
+	random_hex $1 $2
+	exit 0
+fi
+
+random_str $1 $2
